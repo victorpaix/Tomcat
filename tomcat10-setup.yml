@@ -1,0 +1,5 @@
+- hosts: webservers
+  remote_user: tomcatadm
+  --skip-tags: update_java
+  roles:
+    - Tomcat10

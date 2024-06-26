@@ -1,0 +1,11 @@
+---
+ - hosts: webservers 
+   become: true
+   tasks:
+    - name: Create the {{ tomcat_folder }} directory
+      file:
+        path: "{{ tomcat_folder }}"
+        state: directory
+        mode: 0755
+        owner: tomcatadm
+        group: tomcatadm

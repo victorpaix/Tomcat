@@ -6,16 +6,28 @@
     state: directory
     mode: 0755
     owner: tomcatadm
-    group: tomcatadm
+    group: users
+
+- name: Send the binary to the remote server
+  copy:
+    src: "{{ binary_source }}"
+    dest: "/tmp"
+    mode: 0755
+    owner: tomcatadm
+    group: users
 
 - name: Extracting Tomcat binary
   unarchive:
     src: "{{ tomcat_binary }}"
     dest: "{{ tomcat_folder }}"
     mode: 0755
-    group: tomcatadm
+    group: users
     owner: tomcatadm
     remote_src: true   
 
 - name: Move files to the "{{ tomcat_folder }}" directory
   shell: "mv {{ tomcat_folder }}/apache*/* {{ tomcat_folder }}"
+
+- name: Setting up java
+  include_tasks: update-java.yml
+  tags: update_java  

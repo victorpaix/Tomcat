@@ -1,0 +1,27 @@
+---
+- name: Sending Java to the remote server
+  copy:
+    src: "{{ binary_dir }}/{{ java_binary }}"
+    dest: "/opt/tomcat/binaries"
+    mode: 0755
+    owner: tomcatadm
+    group: users
+    
+- name: Extracting Java binary
+  unarchive:
+    src: "/opt/tomcat/binaries"
+    dest: "/opt/tomcat/binaries"
+    mode: 0755
+    group: users
+    owner: tomcatadm
+    remote_src: true
+
+- name: List the extracted file and save the root folder as a variable
+  shell: "ls /opt/tomcat/binaries | grep jdk"
+  register: java_folder
+
+- name: Symlink to the Java binary
+  file:
+    src: "/opt/tomcat/binaries/{{ java_folder }}"
+    dest: "/opt/tomcat/binaries/jdk_current"
+    state: link

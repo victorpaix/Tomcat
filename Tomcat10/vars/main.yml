@@ -1,7 +1,10 @@
 ---
 # vars file for Tomcat10
-vars:
-  tomcat_binary: /tmp/apache-tomcat-10.1.25.tar.gz
+  binary_dir: /opt/apps/binaries
+  java_binary: jdk-21_linux-x64_bin.tar.gz
+  binary: apache-tomcat-10.1.25.tar.gz
+  binary_source: "{{ binary_dir }}/{{ binary }}"
+  tomcat_binary: "/tmp/{{ binary }}"
   tomcat_folder: /opt/tomcat/tomcat10
   tomcat_cluster: "{{ tomcat_folder }}/cluster"
   tomcat_logs: /logs/tomcat/cluster
