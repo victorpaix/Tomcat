@@ -1,0 +1,31 @@
+---
+- name: Configure rootbin folder on under the tomcatadm user
+  hosts: all
+  vars:
+    rootbin_files:
+      - tomcat_health_check.sh
+      - system_health_check.sh
+      - restartJVM.sh
+      - startJVM.ksh
+      - stopJVM.ksh
+
+  tasks:
+    - name: Check and create if not present the rootbin folder under the tomcatadm user
+      file:
+        path: "{{ ansible_env.HOME }}/rootbin"
+        state: directory
+        owner: tomcatadm
+        group: tomcatadm
+        mode: 0755
+      delegate_to: "{{ inventory_hostname }}"
+    
+# reading a list of files to send specific files to the rootbin folder
+    - name: Copy defined files to the rootbin folder
+      copy:
+        src: "files/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/rootbin"
+        owner: tomcatadm
+        group: tomcatadm
+        mode: 0700
+      loop: "{{ rootbin_files }}"
+      delegate_to: "{{ inventory_hostname }}"

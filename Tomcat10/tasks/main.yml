@@ -1,2 +1,21 @@
 ---
 # tasks file for Tomcat10
+- name: Create the {{ tomcat_folder }} directory
+  file:
+    path: "{{ tomcat_folder }}"
+    state: directory
+    mode: 0755
+    owner: tomcatadm
+    group: tomcatadm
+
+- name: Extracting Tomcat binary
+  unarchive:
+    src: "{{ tomcat_binary }}"
+    dest: "{{ tomcat_folder }}"
+    mode: 0755
+    group: tomcatadm
+    owner: tomcatadm
+    remote_src: true   
+
+- name: Move files to the "{{ tomcat_folder }}" directory
+  shell: "mv {{ tomcat_folder }}/apache*/* {{ tomcat_folder }}"

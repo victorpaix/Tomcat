@@ -1,2 +1,10 @@
 ---
 # vars file for Tomcat10
+vars:
+  tomcat_binary: /tmp/apache-tomcat-10.1.25.tar.gz
+  tomcat_folder: /opt/tomcat/tomcat10
+  tomcat_cluster: "{{ tomcat_folder }}/cluster"
+  tomcat_logs: /logs/tomcat/cluster
+  apps_folder: /opt/apps/cluster
+  cluster_name: "s{{ server_number }}_c{{ cluster_number }}"
+  jvm_folder: "{{ tomcat_cluster }}/{{ member_name }}/{{ member_name }}_{{ cluster_name }}"
