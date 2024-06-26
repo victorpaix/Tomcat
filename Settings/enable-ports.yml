@@ -1,6 +1,6 @@
 #enable-ports.yml
 ---
- - hosts: all 
+ - hosts: webservers 
    become: true
    tasks:
     - name: permit traffic in default zone for https service

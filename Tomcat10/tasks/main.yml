@@ -1,4 +1,9 @@
 ---
+- name: Delete previous tests
+  shell: |
+    rm -rf {{ tomcat_folder }}
+    rm -rf /opt/tomcat/binaries
+ 
 # tasks file for Tomcat10
 - name: Create the {{ tomcat_folder }} directory
   file:

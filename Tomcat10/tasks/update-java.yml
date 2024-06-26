@@ -1,15 +1,23 @@
 ---
+- name: Create the binaries directory
+  file: 
+    path: "/opt/tomcat/binaries"
+    state: directory
+    mode: 0755
+    owner: tomcatadm
+    group: users
+
 - name: Sending Java to the remote server
   copy:
     src: "{{ binary_dir }}/{{ java_binary }}"
-    dest: "/opt/tomcat/binaries"
+    dest: "/tmp"
     mode: 0755
     owner: tomcatadm
     group: users
     
 - name: Extracting Java binary
   unarchive:
-    src: "/opt/tomcat/binaries"
+    src: "/tmp/{{ java_binary }}"
     dest: "/opt/tomcat/binaries"
     mode: 0755
     group: users
@@ -22,6 +30,12 @@
 
 - name: Symlink to the Java binary
   file:
-    src: "/opt/tomcat/binaries/{{ java_folder }}"
-    dest: "/opt/tomcat/binaries/jdk_current"
+    src: "/opt/tomcat/binaries/{{ java_folder.stdout }}"
+    dest: "/opt/tomcat/jdk_current"
     state: link
+
+- name: Update JAVA_HOME in the setclasspath.sh file
+  shell: |
+    sed -i '2i JAVA_HOME=/opt/tomcat/binaries/{{ java_folder.stdout }}' {{ tomcat_folder }}/bin/setclasspath.sh
+#  args:
+#    executable: /bin/bash
