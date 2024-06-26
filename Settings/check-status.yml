@@ -1,0 +1,15 @@
+---
+  - hosts: webservers:loadbalancers
+    become: true
+    tasks:
+      - name: Check status of apache
+        command: service httpd status
+#Don't alert for the status as changed
+        args:
+          warn: no
+        changed_when: false
+
+#To ignore errors and leave the playbook running
+      - name: This wont fail
+        command: /bin/false
+        ignore_errors: yes

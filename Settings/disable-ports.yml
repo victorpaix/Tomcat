@@ -1,0 +1,17 @@
+#disable-ports.yml
+---
+ - hosts: webservers:loadbalancers
+   become: true
+   tasks:
+    - name: block traffic in default zone for https service
+      ansible.posix.firewalld:
+        service: https
+        permanent: yes
+        state: disabled
+    - name: block traffic in default zone for http service
+      ansible.posix.firewalld:
+        service: http
+        permanent: yes
+        state: disabled
+    - name: Reload firewalld
+      shell: firewall-cmd --reload

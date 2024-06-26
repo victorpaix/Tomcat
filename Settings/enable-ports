@@ -1,0 +1,22 @@
+#enable-ports.yml
+---
+ - hosts: all 
+   become: true
+   tasks:
+    - name: permit traffic in default zone for https service
+      ansible.posix.firewalld:
+        service: https
+        permanent: yes
+        state: enabled
+    - name: permit traffic in default zone for http service
+      ansible.posix.firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+    - name: enable port 8080
+      ansible.posix.firewalld:
+        port: 8080/tcp
+        permanent: yes
+        state: enabled        
+    - name: Reload firewalld
+      shell: firewall-cmd --reload            
